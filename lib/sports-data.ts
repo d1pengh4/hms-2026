@@ -40,261 +40,63 @@ export interface Event {
   isFinal?: boolean;
 }
 
-// 일정 데이터
-export const events: Event[] = [
-  // 1학년 종목
-  {
-    id: "1-soccer",
-    name: "축구",
-    type: "남",
-    grade: 1,
-    time: "09:00",
-    location: "운동장",
-    participants: ["1-1", "1-2", "1-3", "1-4"],
-    status: "upcoming",
-  },
-  {
-    id: "1-basketball",
-    name: "농구",
-    type: "남",
-    grade: 1,
-    time: "10:30",
-    location: "체육관",
-    participants: ["1-1", "1-2", "1-3", "1-4"],
-    status: "upcoming",
-  },
-  {
-    id: "1-kickball",
-    name: "발야구",
-    type: "여",
-    grade: 1,
-    time: "11:30",
-    location: "운동장",
-    participants: ["1-1", "1-2", "1-3", "1-4"],
-    status: "upcoming",
-  },
-  {
-    id: "1-dodgeball",
-    name: "피구",
-    type: "여",
-    grade: 1,
-    time: "13:00",
-    location: "체육관",
-    participants: ["1-1", "1-2", "1-3", "1-4"],
-    status: "upcoming",
-  },
-  {
-    id: "1-badminton",
-    name: "배드민턴",
-    type: "혼성",
-    grade: 1,
-    time: "14:00",
-    location: "체육관",
-    participants: ["1-1", "1-2", "1-3", "1-4"],
-    status: "upcoming",
-  },
-  {
-    id: "1-tugofwar",
-    name: "줄다리기",
-    type: "혼성",
-    grade: 1,
-    time: "15:00",
-    location: "운동장",
-    participants: ["1-1", "1-2", "1-3", "1-4"],
-    status: "upcoming",
-  },
-  {
-    id: "1-wrestling",
-    name: "씨름",
-    type: "남",
-    grade: 1,
-    time: "15:30",
-    location: "체육관",
-    participants: ["1-1", "1-2", "1-3", "1-4"],
-    status: "upcoming",
-  },
-  {
-    id: "1-relay",
-    name: "이어달리기",
-    type: "혼성",
-    grade: 1,
-    time: "16:30",
-    location: "운동장",
-    participants: ["1-1", "1-2", "1-3", "1-4"],
-    status: "upcoming",
-  },
-  // 2학년 종목
-  {
-    id: "2-soccer",
-    name: "축구",
-    type: "남",
-    grade: 2,
-    time: "09:00",
-    location: "운동장",
-    participants: ["2-1", "2-2", "2-3", "2-4"],
-    status: "upcoming",
-  },
-  {
-    id: "2-basketball",
-    name: "농구",
-    type: "남",
-    grade: 2,
-    time: "10:30",
-    location: "체육관",
-    participants: ["2-1", "2-2", "2-3", "2-4"],
-    status: "upcoming",
-  },
-  {
-    id: "2-kickball",
-    name: "발야구",
-    type: "여",
-    grade: 2,
-    time: "11:30",
-    location: "운동장",
-    participants: ["2-1", "2-2", "2-3", "2-4"],
-    status: "upcoming",
-  },
-  {
-    id: "2-dodgeball",
-    name: "피구",
-    type: "여",
-    grade: 2,
-    time: "13:00",
-    location: "체육관",
-    participants: ["2-1", "2-2", "2-3", "2-4"],
-    status: "upcoming",
-  },
-  {
-    id: "2-badminton",
-    name: "배드민턴",
-    type: "혼성",
-    grade: 2,
-    time: "14:00",
-    location: "체육관",
-    participants: ["2-1", "2-2", "2-3", "2-4"],
-    status: "upcoming",
-  },
-  {
-    id: "2-tugofwar",
-    name: "줄다리기",
-    type: "혼성",
-    grade: 2,
-    time: "15:00",
-    location: "운동장",
-    participants: ["2-1", "2-2", "2-3", "2-4"],
-    status: "upcoming",
-  },
-  {
-    id: "2-wrestling",
-    name: "씨름",
-    type: "남",
-    grade: 2,
-    time: "15:30",
-    location: "체육관",
-    participants: ["2-1", "2-2", "2-3", "2-4"],
-    status: "upcoming",
-  },
-  {
-    id: "2-relay",
-    name: "이어달리기",
-    type: "혼성",
-    grade: 2,
-    time: "16:30",
-    location: "운동장",
-    participants: ["2-1", "2-2", "2-3", "2-4"],
-    status: "upcoming",
-  },
-  // 3학년 종목
-  {
-    id: "3-soccer",
-    name: "축구",
-    type: "남",
-    grade: 3,
-    time: "09:00",
-    location: "운동장",
-    participants: ["3-1", "3-2", "3-3", "3-4"],
-    status: "upcoming",
-  },
-  {
-    id: "3-basketball",
-    name: "농구",
-    type: "남",
-    grade: 3,
-    time: "10:30",
-    location: "체육관",
-    participants: ["3-1", "3-2", "3-3", "3-4"],
-    status: "upcoming",
-  },
-  {
-    id: "3-kickball",
-    name: "발야구",
-    type: "여",
-    grade: 3,
-    time: "11:30",
-    location: "운동장",
-    participants: ["3-1", "3-2", "3-3", "3-4"],
-    status: "upcoming",
-  },
-  {
-    id: "3-dodgeball",
-    name: "피구",
-    type: "여",
-    grade: 3,
-    time: "13:00",
-    location: "체육관",
-    participants: ["3-1", "3-2", "3-3", "3-4"],
-    status: "upcoming",
-  },
-  {
-    id: "3-badminton",
-    name: "배드민턴",
-    type: "혼성",
-    grade: 3,
-    time: "14:00",
-    location: "체육관",
-    participants: ["3-1", "3-2", "3-3", "3-4"],
-    status: "upcoming",
-  },
-  {
-    id: "3-tugofwar",
-    name: "줄다리기",
-    type: "혼성",
-    grade: 3,
-    time: "15:00",
-    location: "운동장",
-    participants: ["3-1", "3-2", "3-3", "3-4"],
-    status: "upcoming",
-  },
-  {
-    id: "3-wrestling",
-    name: "씨름",
-    type: "남",
-    grade: 3,
-    time: "15:30",
-    location: "체육관",
-    participants: ["3-1", "3-2", "3-3", "3-4"],
-    status: "upcoming",
-  },
-  {
-    id: "3-relay",
-    name: "이어달리기",
-    type: "혼성",
-    grade: 3,
-    time: "16:30",
-    location: "운동장",
-    participants: ["3-1", "3-2", "3-3", "3-4"],
-    status: "upcoming",
-  },
-  // 결승 (각 학년 예선 1위 자동 배정)
-  { id: "final-soccer",     name: "축구",     type: "남",  grade: 1, isFinal: true, time: "17:00", location: "운동장", participants: [], status: "upcoming" },
-  { id: "final-basketball", name: "농구",     type: "남",  grade: 1, isFinal: true, time: "17:00", location: "체육관", participants: [], status: "upcoming" },
-  { id: "final-kickball",   name: "발야구",   type: "여",  grade: 1, isFinal: true, time: "17:30", location: "운동장", participants: [], status: "upcoming" },
-  { id: "final-dodgeball",  name: "피구",     type: "여",  grade: 1, isFinal: true, time: "17:30", location: "체육관", participants: [], status: "upcoming" },
-  { id: "final-badminton",  name: "배드민턴", type: "혼성", grade: 1, isFinal: true, time: "18:00", location: "체육관", participants: [], status: "upcoming" },
-  { id: "final-tugofwar",   name: "줄다리기", type: "혼성", grade: 1, isFinal: true, time: "18:00", location: "운동장", participants: [], status: "upcoming" },
-  { id: "final-wrestling",  name: "씨름",     type: "남",  grade: 1, isFinal: true, time: "18:30", location: "체육관", participants: [], status: "upcoming" },
-  { id: "final-relay",      name: "이어달리기", type: "혼성", grade: 1, isFinal: true, time: "18:30", location: "운동장", participants: [], status: "upcoming" },
+// 종목 정의 (예선 시간, 결승 시간)
+const sportDefs: { key: string; name: string; type: Event["type"]; location: string; prelimTime: string; finalTime: string }[] = [
+  { key: "soccer",     name: "축구",       type: "남",  location: "운동장", prelimTime: "09:00", finalTime: "15:00" },
+  { key: "basketball", name: "농구",       type: "남",  location: "체육관", prelimTime: "09:30", finalTime: "15:30" },
+  { key: "kickball",   name: "발야구",     type: "여",  location: "운동장", prelimTime: "10:00", finalTime: "16:00" },
+  { key: "dodgeball",  name: "피구",       type: "여",  location: "체육관", prelimTime: "10:30", finalTime: "16:30" },
+  { key: "badminton",  name: "배드민턴",   type: "혼성", location: "체육관", prelimTime: "11:00", finalTime: "17:00" },
+  { key: "tugofwar",   name: "줄다리기",   type: "혼성", location: "운동장", prelimTime: "11:30", finalTime: "17:30" },
+  { key: "wrestling",  name: "씨름",       type: "남",  location: "체육관", prelimTime: "13:00", finalTime: "18:00" },
+  { key: "relay",      name: "이어달리기", type: "혼성", location: "운동장", prelimTime: "14:00", finalTime: "18:30" },
 ];
+
+// 일정 데이터 생성 (학년별 × 종목별: 예선A, 예선B, 결승)
+function buildEvents(): Event[] {
+  const result: Event[] = [];
+  for (const grade of [1, 2, 3] as const) {
+    for (const s of sportDefs) {
+      // 예선 A: 1반 vs 2반
+      result.push({
+        id: `${grade}-${s.key}-a`,
+        name: s.name,
+        type: s.type,
+        grade,
+        time: s.prelimTime,
+        location: s.location,
+        participants: [`${grade}-1`, `${grade}-2`],
+        status: "upcoming",
+      });
+      // 예선 B: 3반 vs 4반
+      result.push({
+        id: `${grade}-${s.key}-b`,
+        name: s.name,
+        type: s.type,
+        grade,
+        time: s.prelimTime,
+        location: s.location,
+        participants: [`${grade}-3`, `${grade}-4`],
+        status: "upcoming",
+      });
+      // 결승: 예선 A 승자 vs 예선 B 승자 (자동 배정)
+      result.push({
+        id: `${grade}-${s.key}-final`,
+        name: s.name,
+        type: s.type,
+        grade,
+        time: s.finalTime,
+        location: s.location,
+        participants: [],
+        status: "upcoming",
+        isFinal: true,
+      });
+    }
+  }
+  return result;
+}
+
+export const events: Event[] = buildEvents();
 
 // 점수 계산 함수
 export function calculatePoints(eventName: string, rank: number): number {
@@ -310,7 +112,7 @@ export function calculatePoints(eventName: string, rank: number): number {
   }
 }
 
-// 팀별 총점 계산
+// 팀별 총점 계산 (결승 결과 기준 — 결승에 예선 패자 3/4위 포함)
 export function calculateTeamScores(eventsData: Event[], grade: number): { teamId: string; totalPoints: number; relayPoints: number; tugofwarPoints: number; badmintonPoints: number }[] {
   const gradePrefix = `${grade}-`;
   const teamIds = [`${grade}-1`, `${grade}-2`, `${grade}-3`, `${grade}-4`];
@@ -322,7 +124,7 @@ export function calculateTeamScores(eventsData: Event[], grade: number): { teamI
     let badmintonPoints = 0;
 
     eventsData
-      .filter(e => e.grade === grade && !e.isFinal && e.results)
+      .filter(e => e.grade === grade && e.isFinal === true && e.results)
       .forEach(event => {
         const teamResult = event.results?.find(r => r.teamId === teamId);
         if (teamResult) {
