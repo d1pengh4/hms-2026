@@ -1,190 +1,176 @@
 "use client";
 
-import { useState } from "react";
-import { useSportsStore } from "@/lib/sports-store";
-import { teams, calculateTeamScores, getEventTypeColor, getStatusColor, getStatusText } from "@/lib/sports-data";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { useState, useEffect } from "react";
+import { GradePage } from "@/components/grade-page";
+import { ChevronLeft, Clock, Zap, RefreshCw } from "lucide-react";
+import { scheduleByGrade, getMatchStatus, getTeamClassName, type Match } from "@/lib/sports-data";
 
-const GRADES = [1, 2, 3] as const;
-
-const medalColor: Record<number, string> = {
-  1: "text-yellow-500 font-bold",
-  2: "text-slate-400 font-bold",
-  3: "text-amber-600 font-bold",
-};
-
-function TeamSlot({ teamId }: { teamId?: string }) {
-  if (!teamId) {
-    return (
-      <span className="inline-flex items-center justify-center w-7 h-6 rounded border border-dashed border-muted-foreground/50 text-muted-foreground text-sm font-bold select-none">
-        ?
-      </span>
-    );
-  }
-  return (
-    <Badge
-      variant="secondary"
-      className="border text-xs"
-      style={{ borderColor: teams[teamId]?.color, color: teams[teamId]?.color }}
-    >
-      {teams[teamId]?.className}
-    </Badge>
-  );
+// 현재 진행 중이거나 다음 경기 찾기
+function getCurrentAndNextMatches(): { live: Match[]; next: Match | null } {
+  const allMatches: Match[] = [
+    ...scheduleByGrade[1],
+    ...scheduleByGrade[2],
+    ...scheduleByGrade[3],
+  ];
+  
+  const liveMatches = allMatches.filter(m => getMatchStatus(m) === "live");
+  const upcomingMatches = allMatches
+    .filter(m => getMatchStatus(m) === "upcoming")
+    .sort((a, b) => {
+      // 같은 날이면 시간순
+      if (a.day !== b.day) return a.day - b.day;
+      return a.time.localeCompare(b.time);
+    });
+  
+  return {
+    live: liveMatches,
+    next: upcomingMatches[0] || null,
+  };
 }
 
-export default function Page() {
-  const { events } = useSportsStore();
-  const [tab, setTab] = useState("1");
+export default function Home() {
+  const [selectedGrade, setSelectedGrade] = useState<number | null>(null);
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [matches, setMatches] = useState<{ live: Match[]; next: Match | null }>({ live: [], next: null });
 
-  // 종목명 목록 (중복 제거, 원래 순서 유지)
-  const sportNames = Array.from(
-    new Set(events.filter((e) => !e.isFinal).map((e) => e.name))
-  );
+  // 1분마다 시간 업데이트
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTime(new Date());
+      setMatches(getCurrentAndNextMatches());
+    }, 60000);
+    
+    setMatches(getCurrentAndNextMatches());
+    return () => clearInterval(interval);
+  }, []);
+
+  if (selectedGrade === null) {
+    return (
+      <main className="min-h-screen bg-background">
+        <div className="max-w-md mx-auto px-4 py-8">
+          {/* 타이틀 */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-foreground mb-1">
+              체육대회 2026
+            </h1>
+            <p className="text-muted-foreground">
+              5월 14일(목) - 15일(금)
+            </p>
+          </div>
+
+          {/* 실시간 경기 정보 */}
+          {(matches.live.length > 0 || matches.next) && (
+            <div className="mb-6 space-y-3">
+              {/* 진행 중인 경기 */}
+              {matches.live.length > 0 && (
+                <div className="bg-red-50 border border-red-200 rounded-2xl p-4">
+                  <div className="flex items-center gap-2 text-red-700 font-medium mb-2">
+                    <Zap className="w-4 h-4" />
+                    <span>진행 중인 경기</span>
+                    <span className="ml-auto text-xs animate-pulse">LIVE</span>
+                  </div>
+                  <div className="space-y-2">
+                    {matches.live.slice(0, 3).map((match) => (
+                      <div key={match.id} className="text-sm">
+                        <span className="font-bold text-red-800">{match.grade}학년 {match.event}</span>
+                        {match.team1 !== "전체" && match.team2 && (
+                          <span className="text-red-600 ml-2">
+                            {getTeamClassName(match.team1)} vs {getTeamClassName(match.team2)}
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                    {matches.live.length > 3 && (
+                      <p className="text-xs text-red-600">외 {matches.live.length - 3}개 경기</p>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* 다음 경기 */}
+              {matches.next && matches.live.length === 0 && (
+                <div className="bg-blue-50 border border-blue-200 rounded-2xl p-4">
+                  <div className="flex items-center gap-2 text-blue-700 font-medium mb-2">
+                    <Clock className="w-4 h-4" />
+                    <span>다음 경기</span>
+                    <span className="ml-auto text-xs">{matches.next.time}</span>
+                  </div>
+                  <div className="text-sm">
+                    <span className="font-bold text-blue-800">{matches.next.grade}학년 {matches.next.event}</span>
+                    {matches.next.team1 !== "전체" && matches.next.team2 && (
+                      <span className="text-blue-600 ml-2">
+                        {getTeamClassName(matches.next.team1)} vs {getTeamClassName(matches.next.team2)}
+                      </span>
+                    )}
+                    <p className="text-blue-600 text-xs mt-1">{matches.next.location}</p>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* 학년 선택 버튼 */}
+          <div className="space-y-3">
+            <p className="text-sm text-muted-foreground text-center mb-2">학년을 선택하세요</p>
+            {[1, 2, 3].map((grade) => (
+              <button
+                key={grade}
+                onClick={() => setSelectedGrade(grade)}
+                className="w-full py-5 bg-card border border-border rounded-2xl text-xl font-bold text-foreground hover:bg-muted hover:border-foreground/20 active:scale-[0.98] transition-all"
+              >
+                {grade}학년
+              </button>
+            ))}
+          </div>
+
+          {/* 마지막 업데이트 시간 */}
+          <p className="text-xs text-muted-foreground text-center mt-8 flex items-center justify-center gap-1">
+            <RefreshCw className="w-3 h-3" />
+            마지막 업데이트: {currentTime.toLocaleTimeString("ko-KR", { hour: "2-digit", minute: "2-digit" })}
+          </p>
+        </div>
+      </main>
+    );
+  }
 
   return (
-    <main className="min-h-screen bg-background p-4 md:p-8">
-      <div className="mx-auto max-w-4xl space-y-6">
-        <div className="text-center space-y-1">
-          <h1 className="text-3xl font-bold tracking-tight">🏅 HMS 2026 체육대회</h1>
-          <p className="text-muted-foreground text-sm">학년별 토너먼트 일정</p>
-        </div>
+    <main className="min-h-screen bg-background">
+      <div className="max-w-lg mx-auto">
+        {/* 헤더 */}
+        <header className="sticky top-0 z-10 bg-background border-b border-border px-4 py-3">
+          <div className="flex items-center">
+            <button
+              onClick={() => setSelectedGrade(null)}
+              className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors -ml-2 p-2"
+              aria-label="뒤로가기"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <h1 className="flex-1 text-center font-bold text-foreground pr-7">
+              {selectedGrade}학년
+            </h1>
+          </div>
 
-        <Tabs value={tab} onValueChange={setTab}>
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="1">1학년</TabsTrigger>
-            <TabsTrigger value="2">2학년</TabsTrigger>
-            <TabsTrigger value="3">3학년</TabsTrigger>
-          </TabsList>
+          {/* 학년 탭 */}
+          <div className="flex mt-2 -mx-4 px-4 gap-2">
+            {[1, 2, 3].map((grade) => (
+              <button
+                key={grade}
+                onClick={() => setSelectedGrade(grade)}
+                className={`flex-1 py-2 text-sm font-medium rounded-lg transition-colors ${
+                  selectedGrade === grade
+                    ? "bg-foreground text-background"
+                    : "bg-muted text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                {grade}학년
+              </button>
+            ))}
+          </div>
+        </header>
 
-          {GRADES.map((grade) => {
-            const gradeEvents = events.filter((e) => e.grade === grade);
-
-            return (
-              <TabsContent key={grade} value={String(grade)} className="space-y-4">
-                {/* 점수 순위 */}
-                <Card>
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-base">📊 {grade}학년 점수 현황</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <Table>
-                      <TableHeader>
-                        <TableRow>
-                          <TableHead className="w-14">순위</TableHead>
-                          <TableHead>반</TableHead>
-                          <TableHead>팀명</TableHead>
-                          <TableHead className="text-right">총점</TableHead>
-                        </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                        {calculateTeamScores(events, grade).map((score, i) => (
-                          <TableRow key={score.teamId}>
-                            <TableCell className={medalColor[i + 1] ?? "text-muted-foreground"}>
-                              {i + 1}위
-                            </TableCell>
-                            <TableCell className="text-muted-foreground text-sm">
-                              {teams[score.teamId]?.className}
-                            </TableCell>
-                            <TableCell className="font-medium" style={{ color: teams[score.teamId]?.color }}>
-                              {teams[score.teamId]?.name}
-                            </TableCell>
-                            <TableCell className="text-right font-bold">{score.totalPoints}점</TableCell>
-                          </TableRow>
-                        ))}
-                      </TableBody>
-                    </Table>
-                  </CardContent>
-                </Card>
-
-                {/* 종목별 토너먼트 브래킷 */}
-                {sportNames.map((sportName) => {
-                  const prelimA = gradeEvents.find((e) => !e.isFinal && e.name === sportName && e.id.endsWith("-a"));
-                  const prelimB = gradeEvents.find((e) => !e.isFinal && e.name === sportName && e.id.endsWith("-b"));
-                  const final   = gradeEvents.find((e) => e.isFinal && e.name === sportName);
-                  if (!prelimA || !prelimB || !final) return null;
-
-                  const winnerA = prelimA.results?.find((r) => r.rank === 1)?.teamId;
-                  const winnerB = prelimB.results?.find((r) => r.rank === 1)?.teamId;
-
-                  return (
-                    <Card key={sportName}>
-                      <CardHeader className="pb-2">
-                        <div className="flex items-center justify-between">
-                          <CardTitle className="text-base">{sportName}</CardTitle>
-                          <Badge variant="outline" className={getEventTypeColor(prelimA.type)}>
-                            {prelimA.type}
-                          </Badge>
-                        </div>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="flex items-center gap-4">
-                          {/* 예선 */}
-                          <div className="flex-1 space-y-3">
-                            <p className="text-xs text-muted-foreground font-medium mb-1">예선 {prelimA.time} · {prelimA.location}</p>
-                            {/* 예선 A */}
-                            <div className="rounded-lg border px-3 py-2 space-y-1">
-                              {prelimA.participants.map((tid) => (
-                                <div key={tid} className="flex items-center justify-between">
-                                  <span
-                                    className="text-sm font-medium"
-                                    style={{ color: teams[tid]?.color }}
-                                  >
-                                    {teams[tid]?.className}
-                                  </span>
-                                  <Badge className={`text-xs ${getStatusColor(prelimA.status)}`}>
-                                    {getStatusText(prelimA.status)}
-                                  </Badge>
-                                </div>
-                              ))}
-                            </div>
-                            {/* 예선 B */}
-                            <div className="rounded-lg border px-3 py-2 space-y-1">
-                              {prelimB.participants.map((tid) => (
-                                <div key={tid} className="flex items-center justify-between">
-                                  <span
-                                    className="text-sm font-medium"
-                                    style={{ color: teams[tid]?.color }}
-                                  >
-                                    {teams[tid]?.className}
-                                  </span>
-                                  <Badge className={`text-xs ${getStatusColor(prelimB.status)}`}>
-                                    {getStatusText(prelimB.status)}
-                                  </Badge>
-                                </div>
-                              ))}
-                            </div>
-                          </div>
-
-                          {/* 화살표 */}
-                          <div className="text-muted-foreground text-lg">→</div>
-
-                          {/* 결승 */}
-                          <div className="flex-1">
-                            <p className="text-xs text-muted-foreground font-medium mb-1">결승 {final.time} · {final.location}</p>
-                            <div className="rounded-lg border px-3 py-2 space-y-1">
-                              <div className="flex items-center justify-between">
-                                <TeamSlot teamId={winnerA} />
-                                <Badge className={`text-xs ${getStatusColor(final.status)}`}>
-                                  {getStatusText(final.status)}
-                                </Badge>
-                              </div>
-                              <div>
-                                <TeamSlot teamId={winnerB} />
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  );
-                })}
-              </TabsContent>
-            );
-          })}
-        </Tabs>
+        {/* 콘텐츠 */}
+        <GradePage grade={selectedGrade} />
       </div>
     </main>
   );
