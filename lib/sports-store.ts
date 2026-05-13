@@ -17,32 +17,30 @@ export const useSportsStore = create<SportsStore>()(
       events: initialEvents,
       updateEventResult: (eventId, results) =>
         set((state) => {
-          const eventsAfterUpdate = state.events.map((event) =>
+          const updated = state.events.map((event) =>
             event.id === eventId
               ? { ...event, results, status: "completed" as const }
               : event
           );
 
-          const updatedEvent = eventsAfterUpdate.find((e) => e.id === eventId);
-
-          // 예선 결과 업데이트 시 해당 종목 결승의 participants 자동 갱신
-          if (updatedEvent?.round === "예선") {
-            const sportName = updatedEvent.name;
-            const prelimWinners = eventsAfterUpdate
-              .filter((e) => e.round === "예선" && e.name === sportName && e.results)
+          // 예선 결과 확정 시 해당 종목 결승 참가팀 자동 갱신
+          const changedEvent = updated.find((e) => e.id === eventId);
+          if (changedEvent && !changedEvent.isFinal) {
+            const winners = updated
+              .filter((e) => !e.isFinal && e.name === changedEvent.name && e.results)
               .map((e) => e.results!.find((r) => r.rank === 1)?.teamId)
               .filter((id): id is string => !!id);
 
             return {
-              events: eventsAfterUpdate.map((event) =>
-                event.round === "결승" && event.name === sportName
-                  ? { ...event, participants: prelimWinners }
-                  : event
+              events: updated.map((e) =>
+                e.isFinal && e.name === changedEvent.name
+                  ? { ...e, participants: winners }
+                  : e
               ),
             };
           }
 
-          return { events: eventsAfterUpdate };
+          return { events: updated };
         }),
       updateEventStatus: (eventId, status) =>
         set((state) => ({
@@ -56,7 +54,7 @@ export const useSportsStore = create<SportsStore>()(
             ...event,
             results: undefined,
             status: "upcoming" as const,
-            participants: event.round === "결승" ? [] : event.participants,
+            participants: event.isFinal ? [] : event.participants,
           })),
         })),
     }),
