@@ -31,7 +31,8 @@ export interface Event {
   id: string;
   name: string;
   type: "남" | "여" | "혼성";
-  grade: 1 | 2 | 3;
+  grade?: 1 | 2 | 3;
+  round?: "예선" | "결승";
   time: string;
   location: string;
   participants: string[];
@@ -47,6 +48,7 @@ export const events: Event[] = [
     name: "축구",
     type: "남",
     grade: 1,
+    round: "예선",
     time: "09:00",
     location: "운동장",
     participants: ["1-1", "1-2", "1-3", "1-4"],
@@ -57,6 +59,7 @@ export const events: Event[] = [
     name: "농구",
     type: "남",
     grade: 1,
+    round: "예선",
     time: "10:30",
     location: "체육관",
     participants: ["1-1", "1-2", "1-3", "1-4"],
@@ -67,6 +70,7 @@ export const events: Event[] = [
     name: "발야구",
     type: "여",
     grade: 1,
+    round: "예선",
     time: "11:30",
     location: "운동장",
     participants: ["1-1", "1-2", "1-3", "1-4"],
@@ -77,6 +81,7 @@ export const events: Event[] = [
     name: "피구",
     type: "여",
     grade: 1,
+    round: "예선",
     time: "13:00",
     location: "체육관",
     participants: ["1-1", "1-2", "1-3", "1-4"],
@@ -87,6 +92,7 @@ export const events: Event[] = [
     name: "배드민턴",
     type: "혼성",
     grade: 1,
+    round: "예선",
     time: "14:00",
     location: "체육관",
     participants: ["1-1", "1-2", "1-3", "1-4"],
@@ -97,6 +103,7 @@ export const events: Event[] = [
     name: "줄다리기",
     type: "혼성",
     grade: 1,
+    round: "예선",
     time: "15:00",
     location: "운동장",
     participants: ["1-1", "1-2", "1-3", "1-4"],
@@ -107,6 +114,7 @@ export const events: Event[] = [
     name: "씨름",
     type: "남",
     grade: 1,
+    round: "예선",
     time: "15:30",
     location: "체육관",
     participants: ["1-1", "1-2", "1-3", "1-4"],
@@ -117,6 +125,7 @@ export const events: Event[] = [
     name: "이어달리기",
     type: "혼성",
     grade: 1,
+    round: "예선",
     time: "16:30",
     location: "운동장",
     participants: ["1-1", "1-2", "1-3", "1-4"],
@@ -128,6 +137,7 @@ export const events: Event[] = [
     name: "축구",
     type: "남",
     grade: 2,
+    round: "예선",
     time: "09:00",
     location: "운동장",
     participants: ["2-1", "2-2", "2-3", "2-4"],
@@ -138,6 +148,7 @@ export const events: Event[] = [
     name: "농구",
     type: "남",
     grade: 2,
+    round: "예선",
     time: "10:30",
     location: "체육관",
     participants: ["2-1", "2-2", "2-3", "2-4"],
@@ -148,6 +159,7 @@ export const events: Event[] = [
     name: "발야구",
     type: "여",
     grade: 2,
+    round: "예선",
     time: "11:30",
     location: "운동장",
     participants: ["2-1", "2-2", "2-3", "2-4"],
@@ -158,6 +170,7 @@ export const events: Event[] = [
     name: "피구",
     type: "여",
     grade: 2,
+    round: "예선",
     time: "13:00",
     location: "체육관",
     participants: ["2-1", "2-2", "2-3", "2-4"],
@@ -168,6 +181,7 @@ export const events: Event[] = [
     name: "배드민턴",
     type: "혼성",
     grade: 2,
+    round: "예선",
     time: "14:00",
     location: "체육관",
     participants: ["2-1", "2-2", "2-3", "2-4"],
@@ -178,6 +192,7 @@ export const events: Event[] = [
     name: "줄다리기",
     type: "혼성",
     grade: 2,
+    round: "예선",
     time: "15:00",
     location: "운동장",
     participants: ["2-1", "2-2", "2-3", "2-4"],
@@ -188,6 +203,7 @@ export const events: Event[] = [
     name: "씨름",
     type: "남",
     grade: 2,
+    round: "예선",
     time: "15:30",
     location: "체육관",
     participants: ["2-1", "2-2", "2-3", "2-4"],
@@ -198,6 +214,7 @@ export const events: Event[] = [
     name: "이어달리기",
     type: "혼성",
     grade: 2,
+    round: "예선",
     time: "16:30",
     location: "운동장",
     participants: ["2-1", "2-2", "2-3", "2-4"],
@@ -209,6 +226,7 @@ export const events: Event[] = [
     name: "축구",
     type: "남",
     grade: 3,
+    round: "예선",
     time: "09:00",
     location: "운동장",
     participants: ["3-1", "3-2", "3-3", "3-4"],
@@ -219,6 +237,7 @@ export const events: Event[] = [
     name: "농구",
     type: "남",
     grade: 3,
+    round: "예선",
     time: "10:30",
     location: "체육관",
     participants: ["3-1", "3-2", "3-3", "3-4"],
@@ -229,6 +248,7 @@ export const events: Event[] = [
     name: "발야구",
     type: "여",
     grade: 3,
+    round: "예선",
     time: "11:30",
     location: "운동장",
     participants: ["3-1", "3-2", "3-3", "3-4"],
@@ -239,6 +259,7 @@ export const events: Event[] = [
     name: "피구",
     type: "여",
     grade: 3,
+    round: "예선",
     time: "13:00",
     location: "체육관",
     participants: ["3-1", "3-2", "3-3", "3-4"],
@@ -249,6 +270,7 @@ export const events: Event[] = [
     name: "배드민턴",
     type: "혼성",
     grade: 3,
+    round: "예선",
     time: "14:00",
     location: "체육관",
     participants: ["3-1", "3-2", "3-3", "3-4"],
@@ -259,6 +281,7 @@ export const events: Event[] = [
     name: "줄다리기",
     type: "혼성",
     grade: 3,
+    round: "예선",
     time: "15:00",
     location: "운동장",
     participants: ["3-1", "3-2", "3-3", "3-4"],
@@ -269,6 +292,7 @@ export const events: Event[] = [
     name: "씨름",
     type: "남",
     grade: 3,
+    round: "예선",
     time: "15:30",
     location: "체육관",
     participants: ["3-1", "3-2", "3-3", "3-4"],
@@ -279,9 +303,91 @@ export const events: Event[] = [
     name: "이어달리기",
     type: "혼성",
     grade: 3,
+    round: "예선",
     time: "16:30",
     location: "운동장",
     participants: ["3-1", "3-2", "3-3", "3-4"],
+    status: "upcoming",
+  },
+  // 결승 종목 (각 학년 예선 1위 자동 배정)
+  {
+    id: "final-soccer",
+    name: "축구",
+    type: "남",
+    round: "결승",
+    time: "17:00",
+    location: "운동장",
+    participants: [],
+    status: "upcoming",
+  },
+  {
+    id: "final-basketball",
+    name: "농구",
+    type: "남",
+    round: "결승",
+    time: "17:00",
+    location: "체육관",
+    participants: [],
+    status: "upcoming",
+  },
+  {
+    id: "final-kickball",
+    name: "발야구",
+    type: "여",
+    round: "결승",
+    time: "17:30",
+    location: "운동장",
+    participants: [],
+    status: "upcoming",
+  },
+  {
+    id: "final-dodgeball",
+    name: "피구",
+    type: "여",
+    round: "결승",
+    time: "17:30",
+    location: "체육관",
+    participants: [],
+    status: "upcoming",
+  },
+  {
+    id: "final-badminton",
+    name: "배드민턴",
+    type: "혼성",
+    round: "결승",
+    time: "18:00",
+    location: "체육관",
+    participants: [],
+    status: "upcoming",
+  },
+  {
+    id: "final-tugofwar",
+    name: "줄다리기",
+    type: "혼성",
+    round: "결승",
+    time: "18:00",
+    location: "운동장",
+    participants: [],
+    status: "upcoming",
+  },
+  {
+    id: "final-wrestling",
+    name: "씨름",
+    type: "남",
+    round: "결승",
+    time: "18:30",
+    location: "체육관",
+    participants: [],
+    status: "upcoming",
+  },
+  {
+    id: "final-relay",
+    name: "이어달리기",
+    type: "혼성",
+    round: "결승",
+    time: "18:30",
+    location: "운동장",
+    participants: [],
     status: "upcoming",
   },
 ];
@@ -290,7 +396,7 @@ export const events: Event[] = [
 export function calculatePoints(eventName: string, rank: number): number {
   const points = pointSystem[eventName];
   if (!points) return 0;
-  
+
   switch (rank) {
     case 1: return points.first;
     case 2: return points.second;
@@ -304,13 +410,13 @@ export function calculatePoints(eventName: string, rank: number): number {
 export function calculateTeamScores(eventsData: Event[], grade: number): { teamId: string; totalPoints: number; relayPoints: number; tugofwarPoints: number; badmintonPoints: number }[] {
   const gradePrefix = `${grade}-`;
   const teamIds = [`${grade}-1`, `${grade}-2`, `${grade}-3`, `${grade}-4`];
-  
+
   const scores = teamIds.map(teamId => {
     let totalPoints = 0;
     let relayPoints = 0;
     let tugofwarPoints = 0;
     let badmintonPoints = 0;
-    
+
     eventsData
       .filter(e => e.grade === grade && e.results)
       .forEach(event => {
@@ -318,16 +424,16 @@ export function calculateTeamScores(eventsData: Event[], grade: number): { teamI
         if (teamResult) {
           const points = calculatePoints(event.name, teamResult.rank);
           totalPoints += points;
-          
+
           if (event.name === "이어달리기") relayPoints = points;
           if (event.name === "줄다리기") tugofwarPoints = points;
           if (event.name === "배드민턴") badmintonPoints = points;
         }
       });
-    
+
     return { teamId, totalPoints, relayPoints, tugofwarPoints, badmintonPoints };
   });
-  
+
   // 정렬: 총점 > 이어달리기 > 줄다리기 > 배드민턴
   return scores.sort((a, b) => {
     if (b.totalPoints !== a.totalPoints) return b.totalPoints - a.totalPoints;
